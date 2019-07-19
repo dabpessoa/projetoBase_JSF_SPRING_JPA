@@ -12,5 +12,9 @@ public class TesteService {
 	public TesteService() {
 		System.out.println("entrou: "+valor);
 	}
+	
+	public String getValor() {
+		return valor;
+	}
 
 }

@@ -6,8 +6,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -20,11 +18,15 @@ public class SpringServletInitializer implements ApplicationServletInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext, Map<String,Object> sharedInitializerObjects) throws ServletException {
 		
+//		PropertySourcesPlaceholderConfigurer propertiesConfigurer = SpringConfiguration.propertyConfig();
+//		System.out.println(propertiesConfigurer);
+		
 		// Inicializando Spring
 		AnnotationConfigWebApplicationContext springContext = new AnnotationConfigWebApplicationContext();
+		springContext.getEnvironment().setActiveProfiles("desenvolvimento");
 		springContext.register(getRootConfigClasses());
+//		springContext.refresh();
 		ContextLoaderListener listener = new ContextLoaderListener(springContext);
-		listener.setContextInitializers(getRootApplicationContextInitializers());
 		servletContext.addListener(listener);
 		
 		// Configurando o SpringMVC (para serviços REST)
@@ -37,10 +39,6 @@ public class SpringServletInitializer implements ApplicationServletInitializer {
 	
 	public Class<?>[] getRootConfigClasses() {
 		return new Class<?>[]{SpringConfiguration.class};
-	}
-	
-	public ApplicationContextInitializer<ConfigurableApplicationContext>[] getRootApplicationContextInitializers() {
-		return null;
 	}
 	
 	@Override

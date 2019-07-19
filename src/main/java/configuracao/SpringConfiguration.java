@@ -3,24 +3,30 @@ package configuracao;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import br.com.digitoglobal.projeto.service.Teste2;
+import br.com.digitoglobal.projeto.util.SpringContextUtils;
 
 @Configuration
 @ComponentScan(basePackages = {"configuracao.*", "br.com.*"})
 public class SpringConfiguration {
 
+//	public static void main(String[] args) {
+//		Teste2 teste = SpringContextUtils.getBean(Teste2.class);
+//		System.out.println(teste);
+//		System.out.println(teste.getTesteService());
+//	}
+	
 	@Value("${spring.profiles.active}")
 	private String valor;
 	
@@ -33,6 +39,13 @@ public class SpringConfiguration {
 	public SpringConfiguration() {
 		System.out.println("Entrou no SpringConfiguration");
 	}
+	
+//	@Bean
+//    public PropertySourcesPlaceholderConfigurer properties(){
+//        PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
+//        pspc.setIgnoreUnresolvablePlaceholders(true);
+//        return pspc;
+//    }
 	
 	//To resolve ${} in @Value
 	@Bean
