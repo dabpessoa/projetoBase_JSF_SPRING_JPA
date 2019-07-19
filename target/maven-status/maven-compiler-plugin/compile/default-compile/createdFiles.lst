@@ -1,0 +1,7 @@
+br\com\digitoglobal\projeto\controller\MeuController.class
+configuracao\DefaultApplicationServletInitializer.class
+configuracao\DefaultApplicationServletInitializer$1.class
+configuracao\SpringConfiguration.class
+configuracao\servlet\initializer\ApplicationServletContainerInitializer.class
+br\com\digitoglobal\projeto\teste\MeuServlet.class
+configuracao\servlet\initializer\ApplicationServletInitializer.class
