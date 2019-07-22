@@ -2,13 +2,16 @@ package configuracao.servlet.application.initializers;
 
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import javax.servlet.http.HttpServlet;
 
 import org.primefaces.webapp.filter.FileUploadFilter;
+import org.springframework.web.jsf.el.SpringBeanFacesELResolver;
 
 import configuracao.servlet.container.initializer.ApplicationServletInitializer;
 
@@ -34,6 +37,15 @@ public class JSFServletInitializer implements ApplicationServletInitializer {
 		servletContext.setInitParameter("primefaces.THEME" , "bootstrap");
 		servletContext.setInitParameter("primefaces.UPLOADER" , "native" );
 		servletContext.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
+		
+		ServletRegistration.Dynamic elResolverInitializer = servletContext.addServlet("elResolverInit", new HttpServlet() {
+			@Override
+			public void init() throws ServletException {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				facesContext.getApplication().addELResolver(new SpringBeanFacesELResolver());
+			}
+		});
+	    elResolverInitializer.setLoadOnStartup(2);
 		
 	}
 	

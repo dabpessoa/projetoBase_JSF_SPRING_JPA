@@ -1,21 +1,29 @@
 package configuracao;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import br.com.digitoglobal.projeto.service.Teste2;
-import br.com.digitoglobal.projeto.util.SpringContextUtils;
+import configuracao.spring.ApplicationContextProvider;
+import configuracao.spring.SpringViewScope;
 
 @Configuration
 @ComponentScan(basePackages = {"configuracao.*", "br.com.*"})
@@ -88,5 +96,45 @@ public class SpringConfiguration {
 	    }
 	    return propertiesFactoryBean;
 	}
+	
+	@Bean
+	public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
+		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+		threadPoolTaskScheduler.setPoolSize(5);
+		threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+		return threadPoolTaskScheduler;
+	}
+	
+	@Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource bundle = new ResourceBundleMessageSource();
+        bundle.setBasename("messages");
+        return bundle;
+    }
+	
+	@Bean
+    public static CustomScopeConfigurer customScopeConfigurer() {
+        CustomScopeConfigurer customScopeConfigurer = new CustomScopeConfigurer();
+        Map<String, Object> map = new HashMap<>();
+        map.put("view", new SpringViewScope());
+        customScopeConfigurer.setScopes(map);
+        return customScopeConfigurer;
+    }
+	
+	@Bean
+    @Lazy(false)
+    public ApplicationContextProvider applicationContextProvider() {
+        return new ApplicationContextProvider();
+    }
+	
+	@Bean
+    @Lazy(false)
+	@DependsOn("applicationContextProvider")
+    public String applicationInitLog() {
+		Environment environment = applicationContextProvider().getContext().getEnvironment();
+		System.out.println("Environment: "+environment);
+		System.out.println("PROFILE => "+environment.getProperty(""));
+        return null;
+    }
 	
 }

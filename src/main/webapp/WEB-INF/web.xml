@@ -6,20 +6,7 @@
   version="4.0"
   metadata-complete="true">
 
-    <display-name>TecBoletos - Boletos e Cartões</display-name>
-
-    <welcome-file-list>
-        <welcome-file>index.jsf</welcome-file>
-    </welcome-file-list>
-
-    <session-config>
-        <session-timeout>30</session-timeout>
-    </session-config>
-    
-    <context-param>
-        <param-name>primefaces.UPLOADER</param-name>
-        <param-value>native</param-value>
-    </context-param>
+    <display-name>Aplicação</display-name>
 
     <!-- Páginas de erro do sistema -->
     <error-page>

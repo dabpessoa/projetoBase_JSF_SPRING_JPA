@@ -12,8 +12,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.web.jsf.FacesContextUtils;
 
-import configuracao.ApplicationContextProvider;
 import configuracao.SpringConfiguration;
+import configuracao.spring.ApplicationContextProvider;
 
 public abstract class SpringContextUtils {
 
