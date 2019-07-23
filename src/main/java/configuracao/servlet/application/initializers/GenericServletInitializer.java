@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.webapp.filter.FileUploadFilter;
 
+import configuracao.ApplicationEnvironment;
 import configuracao.servlet.container.initializer.ApplicationServletInitializer;
 
 public class GenericServletInitializer implements ApplicationServletInitializer {
@@ -24,7 +25,7 @@ public class GenericServletInitializer implements ApplicationServletInitializer 
 	public void onStartup(ServletContext servletContext, Map<String, Object> sharedInitializerObjects) throws ServletException {
 		
 		// Configurando a "welcome page".
-		String welcomePage = "/index.jsf";
+		String welcomePage = getWelcomePage();
 		if (welcomePage != null && !welcomePage.trim().isEmpty()) {
 			FilterRegistration.Dynamic filterRegistration = servletContext.addFilter("welcomePageFilter", new Filter() {
 				@Override public void init(FilterConfig filterConfig) throws ServletException {}
@@ -51,6 +52,10 @@ public class GenericServletInitializer implements ApplicationServletInitializer 
 		
 	}
 
+	public String getWelcomePage() {
+		return ApplicationEnvironment.WELCOME_PAGE;
+	}
+	
 	@Override
 	public Integer getOrder() {
 		return 3;

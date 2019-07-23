@@ -10,17 +10,14 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import configuracao.ApplicationEnvironment;
 import configuracao.servlet.container.initializer.ApplicationServletInitializer;
-import configuracao.spring.SpringConfiguration;
 
 public class SpringServletInitializer implements ApplicationServletInitializer {
 
 	@Override
 	public void onStartup(ServletContext servletContext, Map<String,Object> sharedInitializerObjects) throws ServletException {
-		
-//		PropertySourcesPlaceholderConfigurer propertiesConfigurer = SpringConfiguration.propertyConfig();
-//		System.out.println(propertiesConfigurer);
-		
+
 		// Inicializando Spring
 		AnnotationConfigWebApplicationContext springContext = new AnnotationConfigWebApplicationContext();
 		springContext.register(getRootConfigClasses());
@@ -35,7 +32,7 @@ public class SpringServletInitializer implements ApplicationServletInitializer {
 	}
 	
 	public Class<?>[] getRootConfigClasses() {
-		return new Class<?>[]{SpringConfiguration.class};
+		return ApplicationEnvironment.springConfigurationClasses;
 	}
 	
 	@Override
