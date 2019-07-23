@@ -10,8 +10,8 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import configuracao.SpringConfiguration;
 import configuracao.servlet.container.initializer.ApplicationServletInitializer;
+import configuracao.spring.SpringConfiguration;
 
 public class SpringServletInitializer implements ApplicationServletInitializer {
 
@@ -23,11 +23,8 @@ public class SpringServletInitializer implements ApplicationServletInitializer {
 		
 		// Inicializando Spring
 		AnnotationConfigWebApplicationContext springContext = new AnnotationConfigWebApplicationContext();
-		springContext.getEnvironment().setActiveProfiles("desenvolvimento");
 		springContext.register(getRootConfigClasses());
-//		springContext.refresh();
-		ContextLoaderListener listener = new ContextLoaderListener(springContext);
-		servletContext.addListener(listener);
+		servletContext.addListener(new ContextLoaderListener(springContext));
 		
 		// Configurando o SpringMVC (para serviços REST)
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("SpringDispatcher", new DispatcherServlet(springContext));

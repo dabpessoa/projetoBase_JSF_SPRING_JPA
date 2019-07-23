@@ -1,10 +1,11 @@
-package configuracao;
+package configuracao.spring;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
@@ -22,9 +23,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import configuracao.spring.ApplicationContextProvider;
-import configuracao.spring.SpringViewScope;
-
 @Configuration
 @ComponentScan(basePackages = {"configuracao.*", "br.com.*"})
 public class SpringConfiguration {
@@ -37,6 +35,8 @@ public class SpringConfiguration {
 	
 	@Value("${spring.profiles.active}")
 	private String valor;
+	
+	@Autowired Environment environment;
 	
 //	@Autowired
 //	private Environment environment;
@@ -57,14 +57,31 @@ public class SpringConfiguration {
 	
 	//To resolve ${} in @Value
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+	public static PropertySourcesPlaceholderConfigurer properties() {
 		YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
 	    Resource yamlResource = new ClassPathResource("application.yml");
 	    yaml.setResources(yamlResource);
 	    yaml.setResolutionMethod(ResolutionMethod.FIRST_FOUND);
 	    Properties properties = yaml.getObject();
 	    
+//	    // convert to stream
+//	    InputStream stream = null;
+//		try(ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+//			properties.store(output, null);
+//			stream = new ByteArrayInputStream(output.toByteArray());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		Resource [] resources = new Resource[] {new InputStreamResource(stream)};
+	    
 		PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
+//		ppc.setLocations(resources);
+		ppc.setProperties(properties);
+		ppc.setIgnoreUnresolvablePlaceholders(true);
+		
+//		MutablePropertySources pro = (MutablePropertySources) ppc.getAppliedPropertySources();
+//		PropertySource ps = new PropertiesPropertySource("applicationProperties", properties);
+//		pro.addLast(ps);
 		
 //		try {
 //	        YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
@@ -80,7 +97,8 @@ public class SpringConfiguration {
 ////                new ClassPathResource("config/" + System.getenv("CURRENTENV") + "/WebApp.properties"));
 //		ppc.setLocation(new ClassPathResource("-desenvolvimento.yml"));
 //        ppc.setPlaceholderPrefix("application");
-        ppc.setProperties(properties);
+		
+        
         return ppc;
 	}
 	
@@ -131,9 +149,8 @@ public class SpringConfiguration {
     @Lazy(false)
 	@DependsOn("applicationContextProvider")
     public String applicationInitLog() {
-		Environment environment = applicationContextProvider().getContext().getEnvironment();
 		System.out.println("Environment: "+environment);
-		System.out.println("PROFILE => "+environment.getProperty(""));
+		System.out.println("PROFILE => "+environment.getProperty("spring.profile.active"));
         return null;
     }
 	
