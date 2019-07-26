@@ -26,7 +26,7 @@ public class SpringServletInitializer implements ApplicationServletInitializer {
 		// Configurando o SpringMVC (para serviços REST)
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("SpringDispatcher", new DispatcherServlet(springContext));
         dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/api/*");
+        dispatcher.addMapping(ApplicationEnvironment.SPRING_DISPATCHER_SERVLET_URI);
         // FIM - Configurando o SpringMVC
 		
 	}
