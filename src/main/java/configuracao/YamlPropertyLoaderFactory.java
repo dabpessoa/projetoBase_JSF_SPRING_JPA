@@ -25,7 +25,7 @@ public class YamlPropertyLoaderFactory extends DefaultPropertySourceFactory {
 	    yaml.setResolutionMethod(ResolutionMethod.FIRST_FOUND);
 	    Properties properties = yaml.getObject();
 		
-	    if (name == null || name.trim().isEmpty()) name = ApplicationEnvironment.APPLICATION_PROPERTY_SOURCE_NAME+"_"+(DateUtils.format(new Date(), "yyyyMMdd_HHmmss"));
+	    if (name == null || name.trim().isEmpty()) name = "applicationProperties_"+(DateUtils.format(new Date(), "yyyyMMdd_HHmmss"));
 	    return new PropertiesPropertySource(name, properties);
     }
 }
