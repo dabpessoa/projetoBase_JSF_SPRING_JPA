@@ -14,7 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.webapp.filter.FileUploadFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import configuracao.ApplicationEnvironment;
 import configuracao.servlet.container.initializer.ApplicationServletInitializer;
@@ -45,7 +45,7 @@ public class GenericServletInitializer implements ApplicationServletInitializer 
 			filterRegistration.addMappingForUrlPatterns(null, false, "/");
 		}
 		
-		FilterRegistration.Dynamic filterRegistration = servletContext.addFilter("CharacterEncodingFilter", FileUploadFilter.class);
+		FilterRegistration.Dynamic filterRegistration = servletContext.addFilter("CharacterEncodingFilter", CharacterEncodingFilter.class);
         filterRegistration.setInitParameter("encoding", "UTF-8");
         filterRegistration.setInitParameter("forceEncoding", "true");
         filterRegistration.addMappingForUrlPatterns(null, false, "/*");
